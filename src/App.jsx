@@ -4,14 +4,20 @@ import { MoviesList } from './components/MoviesList';
 import moviesFromServer from './api/movies.json';
 
 function prepareMoviesData(movies, query) {
-  const filterQuery = query.toLowerCase().trim();
+  if (query) {
+    const queryLower = query.toLowerCase().trim();
 
-  return movies.filter(movie => {
-    return (
-      movie.title.toLowerCase().includes(filterQuery) ||
-      movie.description.toLowerCase().includes(filterQuery)
-    );
-  });
+    return movies.filter(movie => {
+      const titleLower = movie.title.toLowerCase();
+      const descriptionLower = movie.description.toLowerCase();
+
+      return (
+        titleLower.includes(queryLower) || descriptionLower.includes(queryLower)
+      );
+    });
+  }
+
+  return movies;
 }
 
 export const App = () => {
@@ -30,7 +36,6 @@ export const App = () => {
 
             <div className="control">
               <input
-                value={filterQuery}
                 type="text"
                 id="search-query"
                 className="input"
